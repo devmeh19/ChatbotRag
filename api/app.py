@@ -464,6 +464,6 @@ async def get_frontend():
     """
     return HTMLResponse(content=html_content)
 
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="127.0.0.1", port=8080) 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8080) 
