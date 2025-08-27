@@ -10,6 +10,11 @@ import psycopg
 from psycopg.rows import dict_row
 import numpy as np
 from sentence_transformers import SentenceTransformer
+os.environ.pop("HTTP_PROXY", None)
+os.environ.pop("HTTPS_PROXY", None)
+os.environ.pop("http_proxy", None)
+os.environ.pop("https_proxy", None)
+
 from groq import Groq
 from dotenv import load_dotenv
 import re
@@ -19,10 +24,6 @@ import json
 # Load environment variables
 load_dotenv()
 
-os.environ.pop("HTTP_PROXY", None)
-os.environ.pop("HTTPS_PROXY", None)
-os.environ.pop("http_proxy", None)
-os.environ.pop("https_proxy", None)
 
 # Fetch values
 DATABASE_URL = os.getenv("DATABASE_URL1")
@@ -36,7 +37,7 @@ app = FastAPI(title="ROG Xbox Ally Chatbot", version="1.0.0")
 # GROQ_MODEL = GROQ_MODEL1
 
 # Initialize Groq client
-groq_client = Groq(api_key=GROQ_API_KEY)
+groq_client = Groq(api_key=GROQ_API_KEY, http_client=None)
 
 # Initialize sentence transformer model
 model = SentenceTransformer('all-MiniLM-L6-v2')
