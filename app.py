@@ -19,6 +19,11 @@ import json
 # Load environment variables
 load_dotenv()
 
+os.environ.pop("HTTP_PROXY", None)
+os.environ.pop("HTTPS_PROXY", None)
+os.environ.pop("http_proxy", None)
+os.environ.pop("https_proxy", None)
+
 # Fetch values
 DATABASE_URL = os.getenv("DATABASE_URL1")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY1")
