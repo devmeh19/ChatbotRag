@@ -1,4 +1,5 @@
 import os
+import uvicorn
 import requests
 from bs4 import BeautifulSoup
 from fastapi import FastAPI, HTTPException
