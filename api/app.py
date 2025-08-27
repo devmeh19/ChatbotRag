@@ -11,9 +11,9 @@ from psycopg.rows import dict_row
 import numpy as np
 from sentence_transformers import SentenceTransformer
 os.environ.pop("HTTP_PROXY", None)
-os.environ.pop("HTTPS_PROXY", None)
+# os.environ.pop("HTTPS_PROXY", None)
 os.environ.pop("http_proxy", None)
-os.environ.pop("https_proxy", None)
+# os.environ.pop("https_proxy", None)
 
 from groq import Groq
 from dotenv import load_dotenv
@@ -464,6 +464,4 @@ async def get_frontend():
     """
     return HTMLResponse(content=html_content)
 
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="127.0.0.1", port=8080) 
+
