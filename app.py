@@ -4,8 +4,10 @@ from bs4 import BeautifulSoup
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-import psycopg2
-from psycopg2.extras import RealDictCursor
+# import psycopg
+# from psycopg.extras import RealDictCursor
+import psycopg
+from psycopg.rows import dict_row
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from groq import Groq
@@ -44,7 +46,7 @@ class ChatResponse(BaseModel):
 def get_db_connection():
     """Create database connection"""
     try:
-        conn = psycopg2.connect(DATABASE_URL)
+        conn = psycopg.connect(DATABASE_URL)
         return conn
     except Exception as e:
         print(f"Database connection error: {e}")
@@ -57,7 +59,7 @@ def search_similar_chunks(query: str, top_k: int = 5) -> List[Dict[str, Any]]:
     
     conn = get_db_connection()
     try:
-        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+        with conn.cursor(row_factory=dict_row) as cursor:
             # First, let's check the table structure
             cursor.execute("""
                 SELECT column_name, data_type 
