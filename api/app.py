@@ -37,7 +37,7 @@ app = FastAPI(title="ROG Xbox Ally Chatbot", version="1.0.0")
 # GROQ_MODEL = GROQ_MODEL1
 
 # Initialize Groq client
-groq_client = Groq(api_key=GROQ_API_KEY, http_client=None)
+groq_client = Groq(api_key=GROQ_API_KEY)
 
 # Initialize sentence transformer model
 model = SentenceTransformer('all-MiniLM-L6-v2')
