@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "api/index.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/src/frontend/$1"
+    }
+  ],
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "installCommand": "pip install -r requirements.txt && npm install",
+  "buildCommand": "npm run build"
+}
