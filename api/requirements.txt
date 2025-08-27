@@ -8,3 +8,4 @@ psycopg[binary]==3.2.9
 sentence-transformers==3.0.1
 groq==0.11.0 
 httpx==0.24.0
+gunicorn==22.0.0
