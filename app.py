@@ -40,14 +40,8 @@ app = FastAPI(title="ROG Xbox Ally Chatbot", version="1.0.0")
 groq_client = Groq(api_key=GROQ_API_KEY, http_client=None)
 
 # Initialize sentence transformer model
-# model = SentenceTransformer('all-MiniLM-L6-v2')
-MODEL_PATH = "models/all-MiniLM-L6-v2"
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Only download if not already cached
-if not os.path.exists(MODEL_PATH):
-    model = SentenceTransformer('all-MiniLM-L6-v2', cache_folder=MODEL_PATH)
-else:
-    model = SentenceTransformer(MODEL_PATH)
 class ChatRequest(BaseModel):
     message: str
 
