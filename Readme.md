@@ -1,17 +1,18 @@
 # ROG Xbox Ally Chatbot
 
-A **Retrieval-Augmented Generation (RAG)** based chatbot that answers questions about the **Xbox ROG Ally handheld device** using pre-stored data in PostgreSQL. It leverages **semantic embeddings** from `SentenceTransformers` and a **Groq LLM** to generate precise, context-aware answers.  
+A **Retrieval-Augmented Generation (RAG)** based chatbot that answers questions about the **Xbox ROG Ally handheld device** using pre-stored data in PostgreSQL.  
+It leverages **semantic embeddings** from `SentenceTransformers` and a **Groq LLM** to generate accurate, context-aware answers.
 
 ---
 
 ## 🛠 Features
 
-- **Semantic Search:** Uses vector embeddings to retrieve the most relevant chunks of data for a user query.
-- **RAG (Retrieval-Augmented Generation):** Combines retrieved data with a language model to generate natural, accurate responses.
-- **Interactive Web Frontend:** Built with **HTML, CSS, and JavaScript**, providing a sleek, gradient-based chat interface with user/bot distinction.
-- **Sources Display:** Shows the top relevant sources for transparency and trust.
-- **PostgreSQL Backend:** Stores Xbox ROG Ally data along with embeddings for semantic querying.
-- **Dockerized PostgreSQL (optional):** Easy local setup using a PostgreSQL container.
+- **Semantic Search:** Retrieves the most relevant data chunks for user queries using vector similarity.
+- **RAG (Retrieval-Augmented Generation):** Combines retrieved data with LLM to generate natural, context-aware answers.
+- **Interactive Web Frontend:** Sleek chat UI with gradient backgrounds, user/bot message distinction, and responsive design.
+- **Sources Display:** Shows top relevant sources with similarity scores.
+- **PostgreSQL Backend:** Stores Xbox ROG Ally data with embeddings for semantic querying.
+- **Dockerized PostgreSQL (optional):** Easy setup with PostgreSQL container.
 
 ---
 
@@ -19,7 +20,7 @@ A **Retrieval-Augmented Generation (RAG)** based chatbot that answers questions 
 
 devmeh19-chatbotcx/
 ├── README.md
-├── main.py # FastAPI app
+├── main.py # FastAPI application
 ├── requirements.txt # Python dependencies
 ├── start.bat # Script to run the app locally
 ├── scraper.py # Optional web scraping utilities
@@ -36,17 +37,17 @@ Copy code
 ## ⚡ Technologies Used
 
 - **Backend & API:** Python, FastAPI, Uvicorn  
-- **Database:** PostgreSQL (pg container optional)  
+- **Database:** PostgreSQL (or Dockerized PostgreSQL container)  
 - **Embeddings & Semantic Search:** `sentence-transformers` (`all-MiniLM-L6-v2`)  
 - **LLM Integration:** Groq API  
-- **Frontend:** Vanilla HTML/CSS/JS with interactive chat UI  
-- **Deployment:** Configured to run on cloud platforms like Render  
+- **Frontend:** HTML, CSS, JavaScript (interactive chat UI)  
+- **Deployment:** Configured for cloud platforms like Render  
 
 ---
 
 ## 🔧 Setup Instructions
 
-### 1. Clone the Repository
+###1. Clone the Repository
 
 ```bash
 git clone https://github.com/devmeh19/devmeh19-chatbotcx.git
@@ -56,12 +57,16 @@ bash
 Copy code
 pip install -r requirements.txt
 3. PostgreSQL Setup
-You can either run a local PostgreSQL instance or use Docker:
+You can run a local PostgreSQL instance or use Docker.
 
 Using Docker:
 bash
 Copy code
-docker run --name xbox-chatbot-db -e POSTGRES_PASSWORD=YourPassword -e POSTGRES_USER=postgres -e POSTGRES_DB=chatbotdata -p 5432:5432 -d postgres
+docker run --name xbox-chatbot-db \
+    -e POSTGRES_PASSWORD=YourPassword \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_DB=chatbotdata \
+    -p 5432:5432 -d postgres
 Database Table (items_xbox):
 sql
 Copy code
@@ -71,22 +76,27 @@ CREATE TABLE items_xbox (
     embedding VECTOR(384)  -- Matches SentenceTransformer embedding dimension
 );
 4. Generate and Insert Embeddings
-Use SentenceTransformer to encode your Xbox ROG Ally data into vector embeddings:
+Use SentenceTransformer to encode Xbox ROG Ally data into vector embeddings and store them in PostgreSQL.
 
 python
 Copy code
 from sentence_transformers import SentenceTransformer
 import psycopg
 
+# Initialize embedding model
 model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Connect to PostgreSQL
 conn = psycopg.connect("postgresql://postgres:YourPassword@localhost:5432/chatbotdata")
 cursor = conn.cursor()
 
+# Sample Xbox data
 texts = [
     "ROG Xbox Ally has a 7-inch display...",
     "The device runs on Windows 11..."
 ]
 
+# Generate embeddings and insert into DB
 for text in texts:
     embedding = model.encode([text])[0].tolist()
     cursor.execute("INSERT INTO items_xbox (text, embedding) VALUES (%s, %s)", (text, embedding))
@@ -95,7 +105,7 @@ conn.commit()
 cursor.close()
 conn.close()
 5. Environment Variables
-Create a .env file with:
+Create a .env file in the root directory:
 
 env
 Copy code
@@ -109,31 +119,34 @@ Copy code
 python main.py
 Open your browser at http://localhost:8080 to interact with the chatbot.
 
+
+
+
 🧠 How It Works
-User Query: The user sends a question through the web frontend.
+User Query: User submits a question through the web frontend.
 
-Semantic Retrieval: The query is encoded using SentenceTransformer. The system searches for the top k similar chunks in PostgreSQL using vector similarity.
+Semantic Retrieval: Query is encoded using SentenceTransformer, then the system retrieves top k similar chunks from PostgreSQL using vector similarity.
 
-Contextual Answering: The retrieved chunks are passed to Groq LLM to generate a detailed, context-aware answer.
+Contextual Answering: Retrieved chunks are fed to the Groq LLM, which generates a detailed, context-aware response.
 
 Response & Sources: The chatbot returns the answer along with relevant sources and similarity scores.
 
-This ensures that answers are grounded in real data, providing reliability and transparency.
+This ensures answers are grounded in real data, improving reliability and transparency.
 
 🎨 Frontend Highlights
 Modern, blurred chat container with gradient backgrounds.
 
 User messages are color-coded differently from bot messages.
 
-Sources are displayed with similarity scores to enhance credibility.
+Sources are displayed with similarity scores for credibility.
 
-Responsive design for both desktop and mobile screens.
+Fully responsive design for desktop and mobile screens.
 
 🚀 Next Steps / Improvements
-Integrate live scraping of Xbox website for the latest specifications.
+Integrate live scraping of Xbox website for up-to-date specs.
 
 Add multilingual support for global users.
 
-Deploy to Render/Heroku with proper CI/CD pipelines.
+Deploy to Render/Heroku with CI/CD pipelines.
 
-Expand database with FAQs, troubleshooting guides, and reviews for richer answers.
+Expand the database with FAQs, troubleshooting guides, and reviews for richer answers.
