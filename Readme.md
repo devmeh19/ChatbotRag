@@ -130,8 +130,8 @@ Open your browser at http://localhost:8080 to interact with the chatbot.
 
 
 
-  🧠 How It Works
-User Query: User submits a question through the web frontend.
+🧠 How It Works
+User Query: The user sends a question through the web frontend.
 
 Semantic Retrieval: Query is encoded using SentenceTransformer, then the system retrieves top k similar chunks from PostgreSQL using vector similarity.
 
@@ -155,6 +155,6 @@ Integrate live scraping of Xbox website for up-to-date specs.
 
 Add multilingual support for global users.
 
-Deploy to Render/Heroku with CI/CD pipelines.
+Deploy to Render/Heroku with proper CI/CD pipelines.
 
-Expand the database with FAQs, troubleshooting guides, and reviews for richer answers.
+Expand database with FAQs, troubleshooting guides, and reviews for richer answers.
